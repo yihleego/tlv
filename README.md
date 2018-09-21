@@ -84,6 +84,7 @@ TlvBox    v10 = parsed.getObject(0x10);
 #### ConcurrentTlvBox
 
 ```java
+AtomicInteger adder = new AtomicInteger();
 ConcurrentTlvBox concurrentTlvBox = ConcurrentTlvBox.create();
 List<Thread> list = new ArrayList<>();
 for (int i = 0; i < 1000; i++) {
@@ -103,6 +104,8 @@ while (adder.get() < 100000000) {
     concurrentTlvBox.serialize();
 }
 ```
+## Contact
+> * Bugs: [Issues](https://github.com/yihleego/tlv/issues)
 
 ## Links
 > * [Type-length-value Wiki](https://en.wikipedia.org/wiki/Type-length-value)
@@ -110,7 +113,4 @@ while (adder.get() < 100000000) {
 > * [Google/Protocol Buffers](https://github.com/protocolbuffers/protobuf)
 
 ## License
-The Tlv framework is licensed under the IDC LICENSE 1.0
-
-## Contact
-By Issues
+TLV framework is under the Do What The F*ck You Want To Public License. See the [LICENSE](https://github.com/yihleego/tlv/blob/master/LICENSE.txt) file for details.
