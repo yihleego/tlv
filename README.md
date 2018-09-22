@@ -40,7 +40,7 @@ Some advantages of using a TLV representation data system solution are:
 |         |         | **4 Bytes** | **4 Bytes**  | **Length Bytes** |
 | Type    | Length  | Type        | Length       | Value            |
 
-## How to use
+## Usage
 
 #### Serialize
 
@@ -104,6 +104,7 @@ while (adder.get() < 100000000) {
     concurrentTlvBox.serialize();
 }
 ```
+
 ## Contact
 > * Bugs: [Issues](https://github.com/yihleego/tlv/issues)
 

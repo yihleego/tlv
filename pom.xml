@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.leego</groupId>
     <artifactId>tlv</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
     <name>tlv</name>
 
     <build>
@@ -39,23 +42,16 @@
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
-            <!-- resource插件 -->
+            <!-- resources-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <nonFilteredFileExtensions>
-                        <!-- 过滤流程定义资源文件 -->
-                        <nonFilteredFileExtension>zip</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>bar</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>png</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>bpmn</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    
+
 </project>
