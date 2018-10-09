@@ -26,7 +26,7 @@ public class TlvBox {
     }
 
     public TlvBox(TlvBox tlvBox) {
-        this(tlvBox == null ? null : tlvBox.serialize());
+        this(tlvBox != null ? tlvBox.serialize() : null);
     }
 
     public TlvBox(byte[] buffer) {
@@ -34,6 +34,7 @@ public class TlvBox {
     }
 
     public TlvBox(byte[] buffer, int offset, int length) {
+        this();
         if (buffer == null) {
             return;
         }

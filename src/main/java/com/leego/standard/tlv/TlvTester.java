@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /**
  * Created by YihLeego on 2018.09.07 21:14
@@ -13,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 1.0.0
  */
 public class TlvTester {
+    private static final Logger logger = Logger.getLogger("TLV");
     private static final int TEST_TYPE_0 = 0x00;
     private static final int TEST_TYPE_1 = 0x01;
     private static final int TEST_TYPE_2 = 0x02;
@@ -45,16 +47,16 @@ public class TlvTester {
         TlvBox parsedOuter = TlvBox.parse(bytes);
         TlvBox parsedInner = parsedOuter.getObject(TEST_TYPE_10);
 
-        System.out.println("TEST_TYPE_0: " + parsedInner.getBoolean(TEST_TYPE_0));
-        System.out.println("TEST_TYPE_1: " + parsedInner.getByte(TEST_TYPE_1));
-        System.out.println("TEST_TYPE_2: " + parsedInner.getShort(TEST_TYPE_2));
-        System.out.println("TEST_TYPE_3: " + parsedInner.getInteger(TEST_TYPE_3));
-        System.out.println("TEST_TYPE_4: " + parsedInner.getLong(TEST_TYPE_4));
-        System.out.println("TEST_TYPE_5: " + parsedInner.getFloat(TEST_TYPE_5));
-        System.out.println("TEST_TYPE_6: " + parsedInner.getDouble(TEST_TYPE_6));
-        System.out.println("TEST_TYPE_7: " + parsedInner.getCharacter(TEST_TYPE_7));
-        System.out.println("TEST_TYPE_8: " + parsedInner.getString(TEST_TYPE_8));
-        System.out.println("TEST_TYPE_9: " + Arrays.toString(parsedInner.getBytes(TEST_TYPE_9)));
+        logger.info("TEST_TYPE_0: " + parsedInner.getBoolean(TEST_TYPE_0));
+        logger.info("TEST_TYPE_1: " + parsedInner.getByte(TEST_TYPE_1));
+        logger.info("TEST_TYPE_2: " + parsedInner.getShort(TEST_TYPE_2));
+        logger.info("TEST_TYPE_3: " + parsedInner.getInteger(TEST_TYPE_3));
+        logger.info("TEST_TYPE_4: " + parsedInner.getLong(TEST_TYPE_4));
+        logger.info("TEST_TYPE_5: " + parsedInner.getFloat(TEST_TYPE_5));
+        logger.info("TEST_TYPE_6: " + parsedInner.getDouble(TEST_TYPE_6));
+        logger.info("TEST_TYPE_7: " + parsedInner.getCharacter(TEST_TYPE_7));
+        logger.info("TEST_TYPE_8: " + parsedInner.getString(TEST_TYPE_8));
+        logger.info("TEST_TYPE_9: " + Arrays.toString(parsedInner.getBytes(TEST_TYPE_9)));
 
         AtomicInteger adder = new AtomicInteger();
         TlvBox tlvBox = TlvBox.create();
@@ -96,8 +98,6 @@ public class TlvTester {
                 e.printStackTrace();
             }
         }
-        System.out.println(tlvBox.size());
-        System.out.println(concurrentTlvBox.size());
     }
 
 

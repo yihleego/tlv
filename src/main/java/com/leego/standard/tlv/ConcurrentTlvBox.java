@@ -16,6 +16,10 @@ public class ConcurrentTlvBox extends TlvBox {
         super(initialCapacity);
     }
 
+    public ConcurrentTlvBox(TlvBox tlvBox) {
+        super(tlvBox);
+    }
+
     public ConcurrentTlvBox(byte[] buffer) {
         super(buffer);
     }
@@ -33,7 +37,10 @@ public class ConcurrentTlvBox extends TlvBox {
     }
 
     public static ConcurrentTlvBox clone(TlvBox tlvBox) {
-        return ConcurrentTlvBox.parse(tlvBox.serialize());
+        if (tlvBox == null) {
+            return null;
+        }
+        return new ConcurrentTlvBox(tlvBox.serialize());
     }
 
     public static ConcurrentTlvBox parse(byte[] buffer, int offset, int length) {
