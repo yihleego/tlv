@@ -1,4 +1,4 @@
-# Type-length-value
+# Type Length Value
 
 Within [data communication protocols](https://en.wikipedia.org/wiki/Data_communication_protocol), **TLV** (*type-length-value* or *tag-length-value*) is an encoding scheme used for optional information element in a certain protocol.
 The type and length are fixed in size (typically 1-4 bytes), and the value field is of variable size. These fields are used as follows:
@@ -35,7 +35,7 @@ Some advantages of using a TLV representation data system solution are:
 | Type    | Length  | Value        | Type    | Length  | Value        |
 
 ##### Nested TLV Objects:
-| 4 Bytes | 4 Bytes | {           | Length Bytes | }                |
+| 4 Bytes | 4 Bytes |             | Length Bytes |                  |
 | :---:   | :---:   | :---:       | :---:        | :---:            |
 |         |         | **4 Bytes** | **4 Bytes**  | **Length Bytes** |
 | Type    | Length  | Type        | Length       | Value            |
@@ -79,30 +79,6 @@ Character v7 = parsed.getCharacter(0x07);
 String    v8 = parsed.getString(0x08);
 byte[]    v9 = parsed.getBytes(0x09);
 TlvBox    v10 = parsed.getObject(0x10);
-```
-
-#### ConcurrentTlvBox
-
-```java
-AtomicInteger adder = new AtomicInteger();
-ConcurrentTlvBox concurrentTlvBox = ConcurrentTlvBox.create();
-List<Thread> list = new ArrayList<>();
-for (int i = 0; i < 1000; i++) {
-    list.add(new Thread(() -> {
-        TimeUnit.MILLISECONDS.sleep(1);
-        while (adder.incrementAndGet() < 100000000) {
-            int random = (int) (Math.random() * 10000);
-            concurrentTlvBox.put(random, 1);
-        }
-    }));
-}
-for (int i = 0; i < 1000; i++) {
-    list.get(i).start();
-}
-while (adder.get() < 100000000) {
-    TimeUnit.MILLISECONDS.sleep(1);
-    concurrentTlvBox.serialize();
-}
 ```
 
 ## Contact

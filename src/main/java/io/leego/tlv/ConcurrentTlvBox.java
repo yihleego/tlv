@@ -1,8 +1,7 @@
-package com.leego.standard.tlv;
+package io.leego.tlv;
 
 /**
- * Created by YihLeego on 2018.09.07 19:30
- *
+ * ConcurrentTlvBox
  * @author YihLeego
  * @version 1.0.0
  */

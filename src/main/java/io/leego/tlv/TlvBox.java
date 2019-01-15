@@ -1,4 +1,4 @@
-package com.leego.standard.tlv;
+package io.leego.tlv;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by YihLeego on 2018.09.07 19:30
- *
+ * TlvBox
  * @author YihLeego
  * @version 1.0.0
  */
@@ -91,7 +90,6 @@ public class TlvBox {
      * This method is not synchronized,
      * when multiple threads put values concurrently.
      * <p>It <i>must</i> be synchronized externally.
-     *
      * @return {@code byte[]} bytes
      */
     public byte[] serialize() {
@@ -117,7 +115,6 @@ public class TlvBox {
      * when multiple threads put a same-type and nonexistent value concurrently,
      * the length may be error.
      * <p>It <i>must</i> be synchronized externally.
-     *
      * @param type  type
      * @param value value
      * @return a reference to this object {@link TlvBox}
