@@ -243,4 +243,12 @@ public class TlvBox {
         return new TlvBox(bytes, 0, bytes.length);
     }
 
+    public boolean contains(int type) {
+        return valueMap.containsKey(type);
+    }
+
+    public byte[] remove(int type) {
+        return valueMap.remove(type);
+    }
+
 }
