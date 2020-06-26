@@ -45,21 +45,21 @@ Some advantages of using a TLV representation data system solution are:
 #### Serialize
 
 ```java
-TlvBox inner = new TlvBox();
-inner.put(0xFF, "Inner TlvBox");
+TlvBox inner = TlvBox.create();
+inner.put(255, "Inner TlvBox");
 
 TlvBox box = TlvBox.create()
-        .put(0x00, true)
-        .put(0x01, (byte) 1)
-        .put(0x02, (short) 2)
-        .put(0x03, 3)
-        .put(0x04, (long) 4)
-        .put(0x05, 5.5f)
-        .put(0x06, 6.5)
-        .put(0x07, 'A')
-        .put(0x08, "Hello world!")
-        .put(0x09, new byte[]{3, 4, 6, 3, 9})
-        .put(0x10, inner);
+        .put(0, true)
+        .put(1, (byte) 1)
+        .put(2, (short) 2)
+        .put(3, 3)
+        .put(4, (long) 4)
+        .put(5, 5.5f)
+        .put(6, 6.6)
+        .put(7, 'A')
+        .put(8, "Hello world!")
+        .put(9, new byte[]{3, 4, 6, 3, 9})
+        .put(10, inner);
 byte[] bytes = box.serialize();
 ```
 
@@ -67,18 +67,17 @@ byte[] bytes = box.serialize();
 
 ```java
 TlvBox parsed = TlvBox.parse(bytes);
-
-Boolean   v0 = parsed.getBoolean(0x00);
-Byte      v1 = parsed.getByte(0x01);
-Short     v2 = parsed.getShort(0x02);
-Integer   v3 = parsed.getInteger(0x03);
-Long      v4 = parsed.getLong(0x04);
-Float     v5 = parsed.getFloat(0x05);
-Double    v6 = parsed.getDouble(0x06);
-Character v7 = parsed.getCharacter(0x07);
-String    v8 = parsed.getString(0x08);
-byte[]    v9 = parsed.getBytes(0x09);
-TlvBox    v10 = parsed.getObject(0x10);
+Boolean   v0 = parsed.getBoolean(0);
+Byte      v1 = parsed.getByte(1);
+Short     v2 = parsed.getShort(2);
+Integer   v3 = parsed.getInteger(3);
+Long      v4 = parsed.getLong(4);
+Float     v5 = parsed.getFloat(5);
+Double    v6 = parsed.getDouble(6);
+Character v7 = parsed.getCharacter(7);
+String    v8 = parsed.getString(8);
+byte[]    v9 = parsed.getBytes(9);
+TlvBox    v10 = parsed.getObject(10);
 ```
 
 ## Contact
@@ -90,4 +89,4 @@ TlvBox    v10 = parsed.getObject(0x10);
 > * [Google/Protocol Buffers](https://github.com/protocolbuffers/protobuf)
 
 ## License
-TLV framework is under the Do What The F*ck You Want To Public License. See the [LICENSE](https://github.com/yihleego/tlv/blob/master/LICENSE.txt) file for details.
+TLV is under the Do What The F*ck You Want To Public License. See the [LICENSE](https://github.com/yihleego/tlv/blob/master/LICENSE.txt) file for details.

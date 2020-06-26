@@ -2,26 +2,19 @@ package io.leego.tlv;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TlvBox
- * @author YihLeego
- * @version 1.0.0
+ * @author Yihleego
  */
 public class TlvBox {
     protected static final ByteOrder DEFAULT_BYTE_ORDER = ByteOrder.LITTLE_ENDIAN;
-
-    private Map<Integer, byte[]> valueMap;
-    private int length;
+    protected final Map<Integer, byte[]> valueMap;
 
     public TlvBox() {
-        valueMap = new HashMap<>();
-    }
-
-    public TlvBox(int initialCapacity) {
-        valueMap = new HashMap<>(initialCapacity);
+        this.valueMap = new HashMap<>();
     }
 
     public TlvBox(TlvBox tlvBox) {
@@ -33,7 +26,7 @@ public class TlvBox {
     }
 
     public TlvBox(byte[] buffer, int offset, int length) {
-        this();
+        this.valueMap = new HashMap<>();
         if (buffer == null) {
             return;
         }
@@ -50,12 +43,16 @@ public class TlvBox {
         }
     }
 
-    public static TlvBox create() {
-        return new TlvBox();
+    public int length() {
+        int length = 0;
+        for (Map.Entry<Integer, byte[]> entry : valueMap.entrySet()) {
+            length += entry.getValue().length + 8;
+        }
+        return length;
     }
 
-    public static TlvBox create(int initialCapacity) {
-        return new TlvBox(initialCapacity);
+    public static TlvBox create() {
+        return new TlvBox();
     }
 
     public static TlvBox clone(TlvBox tlvBox) {
@@ -86,47 +83,31 @@ public class TlvBox {
         return tlvBox.serialize();
     }
 
-    /**
-     * This method is not synchronized,
-     * when multiple threads put values concurrently.
-     * <p>It <i>must</i> be synchronized externally.
-     * @return {@code byte[]} bytes
-     */
     public byte[] serialize() {
         int offset = 0;
+        int length = this.length();
+        if (length == 0) {
+            return new byte[0];
+        }
         byte[] result = new byte[length];
         for (Map.Entry<Integer, byte[]> entry : valueMap.entrySet()) {
             Integer type = entry.getKey();
-            byte[] valueBytes = entry.getValue();
+            byte[] value = entry.getValue();
             byte[] typeBytes = ByteBuffer.allocate(4).order(DEFAULT_BYTE_ORDER).putInt(type).array();
-            byte[] lengthBytes = ByteBuffer.allocate(4).order(DEFAULT_BYTE_ORDER).putInt(valueBytes.length).array();
+            byte[] valueBytes = ByteBuffer.allocate(4).order(DEFAULT_BYTE_ORDER).putInt(value.length).array();
             System.arraycopy(typeBytes, 0, result, offset, typeBytes.length);
             offset += 4;
-            System.arraycopy(lengthBytes, 0, result, offset, lengthBytes.length);
-            offset += 4;
             System.arraycopy(valueBytes, 0, result, offset, valueBytes.length);
-            offset += valueBytes.length;
+            offset += 4;
+            System.arraycopy(value, 0, result, offset, value.length);
+            offset += value.length;
         }
         return result;
     }
 
-    /**
-     * This method is not synchronized,
-     * when multiple threads put a same-type and nonexistent value concurrently,
-     * the length may be error.
-     * <p>It <i>must</i> be synchronized externally.
-     * @param type  type
-     * @param value value
-     * @return a reference to this object {@link TlvBox}
-     */
     public TlvBox put(int type, byte[] value) {
         if (value == null) {
             return this;
-        }
-        if (valueMap.containsKey(type)) {
-            length += value.length - valueMap.get(type).length;
-        } else {
-            length += value.length + 8;
         }
         valueMap.put(type, value);
         return this;
@@ -137,13 +118,7 @@ public class TlvBox {
     }
 
     public TlvBox put(int type, boolean value) {
-        byte b;
-        if (value) {
-            b = 1;
-        } else {
-            b = 0;
-        }
-        return put(type, new byte[]{b});
+        return put(type, new byte[]{value ? (byte) 1 : (byte) 0});
     }
 
     public TlvBox put(int type, char value) {
@@ -174,7 +149,7 @@ public class TlvBox {
         if (value == null) {
             return this;
         }
-        return put(type, value.getBytes());
+        return put(type, value.getBytes(StandardCharsets.UTF_8));
     }
 
     public TlvBox put(int type, TlvBox value) {
@@ -189,7 +164,7 @@ public class TlvBox {
     }
 
     public Byte getByte(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -197,7 +172,7 @@ public class TlvBox {
     }
 
     public Boolean getBoolean(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -205,7 +180,7 @@ public class TlvBox {
     }
 
     public Character getCharacter(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -213,7 +188,7 @@ public class TlvBox {
     }
 
     public Short getShort(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -221,7 +196,7 @@ public class TlvBox {
     }
 
     public Integer getInteger(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -229,7 +204,7 @@ public class TlvBox {
     }
 
     public Long getLong(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -237,7 +212,7 @@ public class TlvBox {
     }
 
     public Float getFloat(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -245,7 +220,7 @@ public class TlvBox {
     }
 
     public Double getDouble(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
@@ -253,23 +228,19 @@ public class TlvBox {
     }
 
     public String getString(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
-        return new String(bytes);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public TlvBox getObject(int type) {
-        byte[] bytes = valueMap.get(type);
+        byte[] bytes = getBytes(type);
         if (bytes == null) {
             return null;
         }
-        return TlvBox.parse(bytes, 0, bytes.length);
-    }
-
-    public int size() {
-        return length;
+        return new TlvBox(bytes, 0, bytes.length);
     }
 
 }
